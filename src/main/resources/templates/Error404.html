@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{base :: header}"></div>
+
+<body>
+
+	<div th:insert="~{base :: navbar}"></div>
+	<div class="container-fluid p-4 body-section">
+		<div class="d-flex justify-content-end">
+			<span sec:authorize="isAuthenticated()">
+				<a th:href="@{'/posts/new'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-plus-circle"></i> Create New</button></a>
+				<a th:href="@{'/'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-home"></i> Home</button></a>
+				<a th:href="@{'/adminlogin'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-user-circle"></i> Admin login</button></a>
+				<a th:href="@{'/logout'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-sign-out"></i> Logout</button></a>
+			</span>
+			<span sec:authorize="isAnonymous()">
+				<a th:href="@{'/'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-home"></i> Home</button></a>
+				<a th:href="@{'/login'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-sign-in"></i> Login</button></a>
+				<a th:href="@{'/register'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-user-plus"></i> Register</button></a>
+			</span>
+		</div>
+		<div class="container-fluid py-5 body-section">
+			<h2 class="container-fluid py-2 bg-dark text-light text-center" th:text="${message}"></h2>
+		</div>
+	</div>
+
+	<div th:insert="~{base :: footer}"></div>
+</body>
+</html>

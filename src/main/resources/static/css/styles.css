@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Comfortaa:wght@500&family=Dancing+Script&family=Fascinate&family=Fuzzy+Bubbles&family=Lobster&family=Pacifico&display=swap');
+
+:root{
+	--main-accent-color:darkcyan;
+	--main-hr-color:white;
+	--nav-bg-color:#222;
+	--nav-fg-color:white;
+	--footer-bg-color:#333;
+	--footer-fg-color:white;
+}
+
+.body-section{
+	background-color: var(--main-accent-color);
+	min-height: 80vh;
+}
+
+ul{
+  list-style-type: "👻";
+}
+
+ul li label{
+	font-size: 14px;
+}
+
+
+.navbar{
+    background:var(--nav-bg-color);
+	/* background-image:url('https://t4.ftcdn.net/jpg/04/67/93/01/360_F_467930172_RdGhBPu1EB1ksit2xKJDcMxZP8jmGrLq.jpg');*/
+	color:var(--nav-fg-color);
+	text-shadow:2px 2px 5px var(--main-accent-color);
+	font-family: Lobster;
+}
+
+h4{
+	font-family: Lobster;
+	color:white;
+	text-shadow:2px 2px 5px black;
+}
+
+div.scrollmenu {
+  padding:5px 0px;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 2px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: var(--main-accent-color);
+}
+
+
+.card-body a label{
+	margin-left: 5px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.card-body a label:hover{
+	cursor:pointer;
+	opacity:0.7;
+	transition:all 0.3s ease;
+}
+.btn-category:hover{
+	transform: scale(0.9);
+	transition:all 0.3s ease;
+}
+.text-custom-color{
+	color:var(--main-accent-color);
+}
+
+.hr{
+	color:var(--main-hr-color);
+	background-color:var(--main-hr-color);
+	height:2px;
+	border:none;
+}
+
+input[type="submit"]{
+	background:var(--main-accent-color);
+	color:white;
+	padding:8px 2px;
+	border-radius: 5px;
+	border:0
+}
+
+input[type="submit"]:hover{
+	opacity: 0.7;
+	transition:all 0.3s ease;
+}
+
+footer {
+  background: var(--footer-bg-color);
+  position: relative;
+  text-align: center;
+  padding: 20px 5px;
+}
+
+footer label {
+  color: var(--footer-fg-color);
+  font-family: Lobster;
+}
+footer ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer ul a {
+  text-decoration: none;
+  color: whitesmoke;
+  margin: 0px 8px;
+  padding: 4px 12px;
+  transition: 0.2s;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50%;
+  background: black;
+}
+
+footer ul a:hover {
+  transform: scale(1.08);
+  color: white;
+}

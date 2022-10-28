@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,12 +51,22 @@ public class PostController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	public List<Integer> getLikedPostsByUser(Principal principal){
+    	List<Integer> likedPostsByUser=null;
+    	if(principal!=null) {
+	    	String email=principal.getName();
+	    	likedPostsByUser=userService.findUserByEmail(email).getLikes().stream().map(like->like.getPost().getId()).collect(Collectors.toList());
+    	}
+    	return likedPostsByUser;
+	}
+	
     @GetMapping("/page/{pageNumber}")
-    public ModelAndView getAllPosts(@PathVariable("pageNumber") Integer pageNumber){
+    public ModelAndView getAllPosts(@PathVariable("pageNumber") Integer pageNumber,Principal principal){
     	ModelAndView mv=new ModelAndView();
     	PostResponse postResponse= postService.getAllPost(pageNumber,AppConstants.PAGE_SIZE);
     	List<Post> posts=postResponse.getContent();
     	List<Category> categories=categoryService.getAllCategories();
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.addObject("categories", categories);
     	mv.addObject("pagination",true);
     	mv.addObject("posts", posts);
@@ -67,21 +78,23 @@ public class PostController {
     }
     
     @GetMapping("/posts/{id}")
-    public ModelAndView getPostById(@PathVariable("id") Integer id){
+    public ModelAndView getPostById(@PathVariable("id") Integer id,Principal principal){
     	Post post= postService.getById(id);
     	ModelAndView mv=new ModelAndView();
     	mv.addObject("post", post);
     	mv.addObject("editable", false);
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.setViewName("post");
         return mv;
     }
     
     @GetMapping("/posts/edit/{id}")
-    public ModelAndView editPost(@PathVariable("id") Integer id) {
+    public ModelAndView editPost(@PathVariable("id") Integer id, Principal principal) {
     	Post post= postService.getById(id);
     	ModelAndView mv=new ModelAndView();
     	mv.addObject("post", post);
     	mv.addObject("editable", true);
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.setViewName("post");
         return mv;
     }
@@ -90,7 +103,8 @@ public class PostController {
     public ModelAndView updatePost(
     		@PathVariable("id") Integer id,
     		@RequestParam("title") String title,
-    		@RequestParam("body") String body
+    		@RequestParam("body") String body,
+    		Principal principal
     ) {
     	Post post= postService.getById(id);
     	ModelAndView mv=new ModelAndView();
@@ -98,6 +112,7 @@ public class PostController {
     		postService.updatePost(id, title, body);
     	mv.addObject("post", post);
     	mv.addObject("editable", false);
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.setViewName("post");
         return mv;
     }
@@ -158,10 +173,11 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts/search")
-	public ModelAndView searchByKeywords(@RequestParam("keyword") String keyword) {
+	public ModelAndView searchByKeywords(@RequestParam("keyword") String keyword, Principal principal) {
     	ModelAndView mv=new ModelAndView();
     	List<Post> posts=postService.searchByKeywords(keyword);
     	List<Category> categories=categoryService.getAllCategories();
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.addObject("categories", categories);
     	mv.addObject("posts", posts);
     	mv.setViewName("home");
@@ -169,10 +185,11 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts/category/{categoryId}")
-	public ModelAndView getPostByCategory(@PathVariable("categoryId") Integer categoryId) {
+	public ModelAndView getPostByCategory(@PathVariable("categoryId") Integer categoryId, Principal principal) {
     	ModelAndView mv=new ModelAndView();
     	List<Post> posts=postService.getPostByCategory(categoryId);
-    	List<Category> categories=categoryService.getAllCategories();
+    	List<Category> categories=categoryService.getAllCategories();  	
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.addObject("categories", categories);
     	mv.addObject("posts", posts);
     	mv.setViewName("home");
@@ -180,11 +197,12 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts/profile/{userId}")
-	public ModelAndView getUserProfile(@PathVariable("userId") Integer userId) {
+	public ModelAndView getUserProfile(@PathVariable("userId") Integer userId, Principal principal) {
     	ModelAndView mv=new ModelAndView();
     	User user=userService.getUserById(userId);
     	List<Post> posts=postService.getPostByUser(userId);
-    	List<Category> categories=categoryService.getAllCategories();
+    	List<Category> categories=categoryService.getAllCategories();   	
+    	mv.addObject("likedPostsByUser",getLikedPostsByUser(principal));
     	mv.addObject("categories", categories);
     	mv.addObject("posts", posts);
     	mv.addObject("userProfile", user);

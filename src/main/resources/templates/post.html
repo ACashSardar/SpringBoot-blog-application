@@ -8,65 +8,52 @@
 	<div th:insert="~{base :: modal}"></div>
 	
 	<div class="container-fluid p-4 body-section">
-		<div class="d-flex justify-content-end">
-			<span sec:authorize="isAuthenticated()">
-				<a th:href="@{'/posts/new'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-plus-circle"></i> Create New</button></a>
-				<a th:href="@{'/'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-home"></i> Home</button></a>
-				<a th:href="@{'/adminlogin'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-user-circle"></i> Admin login</button></a>
-				<a th:href="@{'/logout'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-sign-out"></i> Logout</button></a>
-			</span>
-			<span sec:authorize="isAnonymous()">
-				<a th:href="@{'/'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-home"></i> Home</button></a>
-				<a th:href="@{'/login'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-sign-in"></i> Login</button></a>
-				<a th:href="@{'/register'}"><button class="btn btn-outline-light border-0 btn-sm"><i class="fa fa-user-plus"></i> Register</button></a>
-			</span>
-		</div>
+		<div th:insert="~{home :: navigation-options}"></div>
 		<br>
-		
 		<div class="row justify-content-center">	
 			<div th:if="${editable==false}" class="card my-2 mx-2 border-0 shadow p-3 mb-5 bg-white rounded" style="width: 25rem">
 				<div class="card-body">
-					<a th:href="@{'/posts/profile/'+${post.user.id}}" class="link-dark text-decoration-none">
-					<img alt="" th:src="'/posts/image/'+${post.user.profilePicture}" class="rounded-circle" style="width:2rem;height:2rem">
-					  <label th:text="${post.user.firstName}+' '+${post.user.lastName}" class="card-title"></label><br>
-					</a>
+					<div class="d-flex justify-content-between">
+						<a th:href="@{'/posts/profile/'+${post.user.id}}" class="text-decoration-none">
+						<img alt="" th:src="'/posts/image/'+${post.user.profilePicture}" class="rounded-circle" style="width:2rem;height:2rem">
+						  <label th:text="${post.user.firstName}+' '+${post.user.lastName}" class="text-custom-color"></label><br>
+						</a>
+						<div th:insert="~{home :: dropdown-menu}"></div>
+					</div>
 					<hr>
-					<h5 class="card-title text-primary" th:text="${post.title}"></h5>
+					<h5 class="card-title" th:text="${post.title}"></h5>
 				</div>
 				<img th:src="'/posts/image/'+${post.imageName}">
-				<div class="card-body">
-					<p th:text="${post.body}"></p><hr>
-					<p class="text-secondary" th:text="Category+': '+${post.category.categoryName}"></p>
-					<p class="text-secondary" th:text="'Created on '+${#temporals.format(post.createdAt, 'dd-MMM-yyyy')}+', comment(s) : '+${post.comments.size}"></p>
-					<div>
-						<span sec:authorize="isAuthenticated()">
-							<span th:if="${#authentication.getPrincipal().getUsername()==post.user.email}">
-								<button class="btn btn-outline-danger btn-sm rounded-5 border-0" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="confirmDelete(this)"
-								th:name="'/posts/delete/'+${post.id}" ><i class="fa fa-trash"></i> Delete Post</button>
-								<a th:href="@{'/posts/edit/'+${post.id}}"><button class="btn btn-outline-primary btn-sm rounded-5 border-0"><i class="fa fa-pen"></i> Edit Post</button></a>
-							</span>
-						</span>
-					</div>
+				<div class="card-body mb-0">
+					<p class="card-text" th:text="${post.body}"></p><hr>
 				</div>
+				<div class="mb-3 mx-1 d-flex justify-content-between">
+					<span class="badge bg-light text-dark" th:text="'🎯 '+${#temporals.format(post.createdAt, 'dd-MMM-yyyy')}"></span>
+					<span class="badge bg-light text-dark">Like(s): 
+						<label class="like-count" th:text="${post.likes.size()}"></label>
+					</span>
+					<span class="badge bg-light text-dark" th:text="'Comment(s) : '+${post.comments.size}"></span>
+				</div>
+				<button th:if="${likedPostsByUser!=null}" class="btn like-btn" th:name="${#authentication.getPrincipal().getUsername()}+'/'+${post.id}+'/'+${likedPostsByUser.contains(post.id)}"
+			 		onclick="reactpost(this)">Like this post <i class="fa fa-thumbs-up"></i>
+				</button>
 			</div>
 			
 			<div th:if="${editable==true}" class="card my-2 mx-2 border-0 shadow p-3 mb-5 bg-white rounded" style="width: 25rem">
 				<form th:action="@{'/posts/update/'+${post.id}}" method="post">
-				<div class="card-body">
-					<textarea th:if="${editable==true}" class="form-control" rows="3" cols="40" name="title" th:text="${post.title}" required></textarea>
-				</div>
-				<img class="px-3"style="max-width:23rem" th:src="'/posts/image/'+${post.imageName}">
-				<div class="card-body">
-					<textarea th:if="${editable==true}" class="form-control" rows="4" cols="40" name="body" th:text="${post.body}" required></textarea>
-					<hr>
-					<h6 th:text="Category+' : '+${post.category.categoryName}"></h6>
-					<p th:text="Created+' '+at+' '+
-					${post.createdAt.toString().substring(0,16).replace('T',' at ')}+' '+
-					by+' '+${post.user.firstName}+' '+${post.user.lastName}"></p>
-					<div th:if="${editable==true}">
-						<input type="submit" class="btn btn-primary" value="Save & Update">
+					<div class="card-body">
+						<textarea th:if="${editable==true}" class="form-control" rows="3" cols="40" name="title" th:text="${post.title}" required></textarea>
 					</div>
-				</div>
+					<img class="px-3"style="max-width:23rem" th:src="'/posts/image/'+${post.imageName}">
+					<div class="card-body">
+						<textarea th:if="${editable==true}" class="form-control" rows="4" cols="40" name="body" th:text="${post.body}" required></textarea>
+						<hr>
+						<h6 th:text="Category+' : '+${post.category.categoryName}"></h6>
+						<p th:text="Created+' '+at+' '+
+						${post.createdAt.toString().substring(0,16).replace('T',' at ')}+' '+
+						by+' '+${post.user.firstName}+' '+${post.user.lastName}"></p>
+						<input type="submit" th:if="${editable==true}" style="width:100%" value="Save & Update"/>
+					</div>
 				</form>
 			</div>
 			
@@ -74,15 +61,15 @@
 			  <div class="card-body ">
 			    <h5 class="card-title"><i class="fa fa-comment"></i> Comments</h5><hr>
 			    <ul>
-				    <li th:each="comment : ${post.comments}">	
-				    	<span class="card-text" th:text="${comment.content}">Error</span><br>
-				    	<label class="card-text text-info" th:text="'['+${comment.commentedBy}+' on '+${comment.createdAt.toString().substring(0,16).replace('T',' at ')}+']'">Error</label>
+				    <li th:each="comment : ${post.comments}">	    	
+				    	<span class="badge bg-light text-dark" th:text="${comment.commentedBy}+' on '+${comment.createdAt.toString().substring(0,16).replace('T',' at ')}"></span><br>
+				    	<label class="mt-2 bg-info text-light rounded-2 p-2" th:text="${comment.content}">Error</label>
 				    </li>
 			    </ul>
 			    <span sec:authorize="isAuthenticated()">
 				    <form action="#" th:action="@{'/posts/comment/'+${post.id}+'/'+${post.user.id}}+'/'+${#authentication.getPrincipal().getUsername()}" method="post">
 				    	<input type="text"  class="form-control my-2" name="comment" placeholder="Leave a comment!!" required>
-				    	<input type="submit" class="btn btn-warning text-light" value="Post comment">
+				    	<input type="submit" value="Post comment">
 				    </form>
 			    </span>
 			    <span sec:authorize="isAnonymous()">

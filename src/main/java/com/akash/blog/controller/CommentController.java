@@ -36,7 +36,7 @@ public class CommentController {
 		return new ModelAndView("redirect:/posts/"+postId);
 	}
 	
-	@GetMapping("/posts/comment/delete/{postId}/{commentId}")
+	@GetMapping("/comments/delete/{commentId}/{postId}")
 	public ModelAndView deleteComment(@PathVariable("commentId") Integer commentId,@PathVariable("postId") Integer postId){
 		commentService.deleteComment(commentId);
 		return new ModelAndView("redirect:/posts/"+postId);

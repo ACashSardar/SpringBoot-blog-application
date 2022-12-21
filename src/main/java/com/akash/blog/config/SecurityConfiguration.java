@@ -18,9 +18,9 @@ import com.akash.blog.service.UserService;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
-	private static String [] WHITELIST= {"/","/login","/register","/posts/image/*","/posts/category/*",
-			"/posts/edit/*","/posts/update/*","/posts/comment/*/*","/posts/profile/*","/css/styles.css",
-			"/js/main.js","/page/*"};
+	private static String [] WHITELIST= {"/","/login","/register","/posts/*","/posts/image/*","/posts/category/**",
+			"/posts/edit/*","/posts/update/*","/posts/comment/*/*","/posts/profile/**","/css/styles.css",
+			"/js/main.js","/page/*","/h2-console/*",};
 	
 	@Autowired
 	UserService userService;
@@ -47,10 +47,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		http
 		.authorizeRequests()
 		.antMatchers(WHITELIST)
-		.permitAll()
-		.antMatchers(HttpMethod.POST,"/posts/*")
-		.permitAll()
-		.antMatchers(HttpMethod.GET,"/posts/*")
 		.permitAll()
 		.anyRequest()
 		.authenticated()

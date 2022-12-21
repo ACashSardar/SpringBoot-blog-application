@@ -6,12 +6,12 @@
 
 	<div th:insert="~{base :: navbar}"></div>
 	<div class="container-fluid p-4 body-section">
-		<div th:insert="~{home :: navigation-options}"></div>
 		<div class="container-fluid py-5 body-section">
 			<h2 class="container-fluid py-2 bg-dark text-light text-center" th:text="${message}"></h2>
 		</div>
 	</div>
 
 	<div th:insert="~{base :: footer}"></div>
+	<div th:insert="~{base :: js-links}"></div>
 </body>
 </html>

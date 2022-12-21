@@ -46,6 +46,9 @@ public class User {
 	
 	private String profilePicture;
 	
+	@Column(length = 2000)
+	private String aboutInfo;
+	
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Post> posts;
 	

@@ -1,22 +1,63 @@
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Comfortaa:wght@500&family=Dancing+Script&family=Fascinate&family=Fuzzy+Bubbles&family=Lobster&family=Pacifico&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Comfortaa:wght@500&family=Dancing+Script&family=Fascinate&family=Fuzzy+Bubbles&family=Lobster&family=Pacifico&family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Caveat:wght@500&family=Comfortaa:wght@500&family=Dancing+Script&family=Fascinate&family=Fuzzy+Bubbles&family=Klee+One&family=Lobster&family=Pacifico&family=Poppins:wght@400&family=Roboto+Condensed:wght@300&family=Ubuntu&display=swap');
 
 :root{
-	--main-accent-color:lightseagreen;
-	--main-hr-color:white;
-	--nav-bg-color:#222;
-	--nav-fg-color:white;
-	--footer-bg-color:#333;
+	--main-accent-color:lightseagreen ;
+	--main-background-color:#eee;
+	--nav-fg-color: #333;
+	--nav-text-shadow:cyan;
+	--footer-bg-color:#222;
 	--footer-fg-color:white;
+	--primary-font:Roboto Condensed;
+	--secondary-font:Klee One;
 }
 
 .body-section{
-	background-color: var(--main-accent-color);
+	background-color: var(--main-background-color);
 	min-height: 80vh;
 }
 
+p,label{
+	font-family: var(--secondary-font);
+	font-size: 13px;
+}
+h2,h3,h4,h5,h6,li,a,.tagline,.searchbar{
+	font-family: var(--primary-font);
+}
+
+.searchbar{
+	position:absolute;
+	top:45vh;
+	width:100%;
+	height:10vh;
+	background: rgb(0,0,0,0);
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	font-size: 50px;
+	color: white;
+	text-shadow: 2px 2px 5px black;
+}
+
+.searchbar input{
+	background: rgb(255,255,255,0.8);
+}
+
+.tagline{
+	position:absolute;
+	top:85vh;
+	width:100%;
+	height:15vh;
+	background: rgb(0,0,0,0.2);
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	font-size: 40px;
+	color: white;
+	font-weight: 600;
+}
+
 ul{
-  list-style-type: "👻";
+  list-style-type: "👤";
 }
 
 ul li label{
@@ -24,38 +65,38 @@ ul li label{
 }
 
 
-.navbar{
-    background:var(--nav-bg-color);
-	/* background-image:url('https://t4.ftcdn.net/jpg/04/67/93/01/360_F_467930172_RdGhBPu1EB1ksit2xKJDcMxZP8jmGrLq.jpg');*/
+.brand-name{
 	color:var(--nav-fg-color);
-	text-shadow:10px 6px 10px var(--main-accent-color);
-	font-family: Ubuntu;
+	letter-spacing: 1px;
 }
 
-h4{
-	font-family: Ubuntu;
-	color:white;
-	text-shadow:2px 2px 5px black;
+
+.nav-item a{
+	color: #333;
+	letter-spacing: 1px;
 }
 
-div.scrollmenu {
+.nav-link:hover,.nav-item a:hover{
+	transition:all 0.2s ease;
+	color:lightseagreen;
+	text-decoration: underline 5px;
+	text-underline-position: under;
+	text-underline-offset: 25px;
+}
+
+.scrollmenu {
   padding:5px 0px;
   overflow: auto;
   white-space: nowrap;
 }
 
-div.scrollmenu a {
+.scrollmenu a {
   display: inline-block;
   color: white;
   text-align: center;
-  padding: 2px;
+  padding: 1px;
   text-decoration: none;
 }
-
-div.scrollmenu a:hover {
-  background-color: var(--main-accent-color);
-}
-
 
 .card-body a label{
 	margin-left: 5px;
@@ -69,18 +110,8 @@ div.scrollmenu a:hover {
 	transition:all 0.3s ease;
 }
 .btn-category:hover{
-	transform: scale(0.9);
+	transform: scale(0.95);
 	transition:all 0.3s ease;
-}
-.text-custom-color{
-	color:var(--main-accent-color);
-}
-
-.hr{
-	color:var(--main-hr-color);
-	background-color:var(--main-hr-color);
-	height:2px;
-	border:none;
 }
 
 input[type="submit"]{
@@ -100,6 +131,25 @@ input[type="submit"]:hover{
 	opacity: 0.7;
 	transition:all 0.3s ease;
 }
+.delete-comment-icon:hover{
+	opacity: 0.5;
+	transform: scale(0.9);
+	transition:all 0.3s ease;
+	cursor: pointer;
+}
+.my-card-item:hover{
+	box-shadow:2px 2px 5px gray;
+}
+
+.custom-link{
+	text-decoration: none;
+	color: grey;
+}
+.custom-link:hover{
+	color:lightseagreen;
+	transition:all 0.3s ease;
+	text-decoration: underline;
+}
 
 footer {
   background: var(--footer-bg-color);
@@ -110,7 +160,6 @@ footer {
 
 footer label {
   color: var(--footer-fg-color);
-  font-family: Ubuntu;
 }
 footer ul {
   display: flex;
@@ -127,7 +176,7 @@ footer ul a {
   font-size: 20px;
   font-weight: bold;
   border-radius: 50%;
-  background: black;
+  background:black;
 }
 
 footer ul a:hover {

@@ -20,6 +20,7 @@ import com.akash.blog.repository.PostRepository;
 import com.akash.blog.repository.UserRepository;
 import com.akash.blog.service.PostService;
 import com.akash.blog.repository.CategoryRepository;
+import com.akash.blog.controller.PostController;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -38,20 +39,34 @@ public class PostServiceImpl implements PostService {
 		Post post= postRepository.findById(id).get();
 		return post;
 	}
-
+	
+	public PostResponse getPostResponse(Page<Post> pagePost,List<Post> myPosts,int pageNumber, int pageSize,int totalElements) {
+		List<Post> posts=myPosts==null?pagePost.getContent():myPosts;
+		PostResponse postResponse=new PostResponse();
+		postResponse.setContent(posts);
+		if(pagePost!=null) {
+			postResponse.setPageNumber(pagePost.getNumber());
+			postResponse.setPageSize(pagePost.getSize());
+			postResponse.setLastPage(pagePost.isLast());
+			postResponse.setTotalElements(pagePost.getTotalElements());
+			postResponse.setTotalPages(pagePost.getTotalPages());
+		}
+		else {
+			System.out.println(pageNumber+" "+pageSize+" "+totalElements);
+			postResponse.setPageNumber(pageNumber);
+			postResponse.setPageSize(pageSize);
+			postResponse.setLastPage((pageNumber+1)*pageSize>=totalElements);
+			postResponse.setTotalElements(totalElements);
+			postResponse.setTotalPages((int)Math.ceil((double)totalElements/pageSize));
+		}
+		return postResponse;
+	}
+	
 	@Override
 	public PostResponse getAllPost(int pageNumber, int pageSize) {
 		Pageable pageable=PageRequest.of(pageNumber, pageSize);
 		Page<Post> pagePost=postRepository.findAll(pageable);
-		List<Post> posts=pagePost.getContent();
-		PostResponse postResponse=new PostResponse();
-		postResponse.setContent(posts);
-		postResponse.setPageNumber(pagePost.getNumber());
-		postResponse.setPageSize(pagePost.getSize());
-		postResponse.setLastPage(pagePost.isLast());
-		postResponse.setTotalElements(pagePost.getTotalElements());
-		postResponse.setTotalPages(pagePost.getTotalPages());
-		return postResponse;
+		return getPostResponse(pagePost,null,pageNumber,pageSize,(int)pagePost.getTotalElements());
 	}
 
 	@Override
@@ -80,6 +95,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public PostResponse getPostByCategory(Integer categoryId, int pageNumber, int pageSize) {
+		Category category=categoryRepository.findById(categoryId).get();
+		Pageable paging = PageRequest.of(pageNumber, pageSize);
+		int totalElements=postRepository.findByCategory(category).size();
+		List<Post> posts=postRepository.findByCategory(category, paging);
+		return getPostResponse(null,posts,pageNumber,pageSize,totalElements);
+	}
+	
+	@Override
 	public List<Post> getPostByCategory(Integer categoryId) {
 		Category category=categoryRepository.findById(categoryId).get();
 		List<Post> posts=postRepository.findByCategory(category);
@@ -87,17 +111,21 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getPostByUser(Integer userId) {
+	public PostResponse getPostByUser(Integer userId, int pageNumber, int pageSize) {
 		User user=userRepository.findById(userId).get();
-		List<Post> posts=postRepository.findByUser(user);
-		return posts;
+		Pageable paging = PageRequest.of(pageNumber, pageSize);
+		int totalElements=postRepository.findByUser(user).size();
+		List<Post> posts=postRepository.findByUser(user,paging);
+		return getPostResponse(null,posts,pageNumber,pageSize,totalElements);
 	}
 
 	@Override
-	public Post updatePost(Integer id, String title, String body) {
+	public Post updatePost(Integer id, String title, String body, String shortDesc) {
 		Post updatedPost=postRepository.findById(id).get();
 		updatedPost.setTitle(title);
 		updatedPost.setBody(body);
+		updatedPost.setShortDesc(shortDesc);
+		updatedPost.setHtml(PostController.markdownToHTML(body));
 		postRepository.save(updatedPost);
 		return updatedPost;
 	}

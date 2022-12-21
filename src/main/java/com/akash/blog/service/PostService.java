@@ -10,8 +10,9 @@ public interface PostService {
 	PostResponse getAllPost(int pageNumber, int pageSize);
 	Post savePost(Post post);
 	void deletePost(Integer id);
-	Post updatePost(Integer id, String title, String body);
+	Post updatePost(Integer id, String title, String body, String shortDesc);
 	List<Post> searchByKeywords(String keyword);
 	List<Post> getPostByCategory(Integer categoryId);
-	List<Post> getPostByUser(Integer userId);
+	PostResponse getPostByCategory(Integer categoryId, int pageNumber, int pageSize);
+	PostResponse getPostByUser(Integer userId, int pageNumber, int pageSize);
 }

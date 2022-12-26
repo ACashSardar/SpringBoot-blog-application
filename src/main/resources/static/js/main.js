@@ -8,13 +8,9 @@ let homepageImage = document.getElementById("homepage-image")
 
 if (homepageImage != null) {
 	const imageArray = [
-		"https://img3.oastatic.com/img2/74172964/max/t.jpg",
-		"https://media.audleytravel.com/-/media/images/home/europe/italy/places/amalfi-coast/amalfi-coast-shutterstock_1436187389-1000x3000.jpg?q=79&w=1920&h=640",
-		"https://media.cntraveller.com/photos/611bf7a0f6bd8f17556dbb02/16:9/w_2992,h_1683,c_limit/provence-in-southern-france-gettyimages-598180730.jpg",
-		"https://cdn.tourradar.com/s3/tour/1500x800/85738_1e3935fa.jpg",
-		"https://wallpaperaccess.com/full/194458.jpg",
+		"https://idsb.tmgrup.com.tr/ly/uploads/images/2020/08/07/50624.jpg",
 		"https://tandktravelgroup.com/wp-content/uploads/2022/07/travel1.jpeg",
-		"https://media.architecturaldigest.com/photos/57e2dba0f2e2598d338a04fe/16:9/w_2560%2Cc_limit/torres-del-paine-national-park.jpg"
+		"https://images.prismic.io/indiahike/22d80dbe-d1a1-47e2-b6ff-6065ec3f5143_August+-+Kashmir+great+lakes_Indiahikes_Rajshree+Sarda_trailwithtrekkers_+%281%29.jpg?auto=compress,format&rect=0,139,1600,600&w=1600&h=600"
 	]
 
 	let i = 0;
@@ -42,7 +38,7 @@ if (inputImg !== null) {
 
 let baseURL = "http://localhost:8000";
 let deleteURL = "";
-let accentColor = "limegreen"
+let accentColor = "rgb(80, 200, 220)"
 
 function confirmDelete(element) {
 	deleteURL = element.name;

@@ -23,13 +23,7 @@
 					</a> <label class="fs-6 fw-bold"
 						th:text="${#temporals.format(post.createdAt, 'dd/MMM/yyyy')}"></label>
 				</div>
-				<div class="text-center bg-info text-light p-1 my-2"
-					style="width: 100%">
-					Like(s): <label class="like-count" th:text="${post.likes.size()}"></label>
-					,Comment(s): <label th:text="${post.comments.size()}"></label>
-					,Category: <label th:text="${post.category.categoryName}"></label>
-
-				</div>
+				<hr>
 				<h3 class="card-title" th:text="${post.title}"></h3>
 				<p class="fw-light" th:text="${post.shortDesc}"></p>
 			</div>
@@ -38,15 +32,19 @@
 			<div class="card-body mb-0">
 				<div class="fw-light fs-5" th:utext="${post.html}"></div>
 			</div>
-
+			<span class="text-center text-secondary" style="width: 100%">
+				Like(s): <b class="like-count" th:text="${post.likes.size()}"></b>
+				,Comment(s): <b th:text="${post.comments.size()}"></b> ,Category: <b
+				th:text="${post.category.categoryName}"></b>
+			</span>
 			<div sec:authorize="isAuthenticated()"
 				class="d-flex justify-content-end p-3">
 				<a
 					th:if="${#authentication.getPrincipal().getUsername()==post.user.email}"
-					class="btn btn-primary btn-sm rounded-0 me-1 px-3"
+					class="btn btn-info text-light btn-sm rounded-0 me-1 px-3"
 					th:href="@{'/posts/edit/'+${post.id}}"> Edit </a> <a
 					th:if="${#authentication.getPrincipal().getUsername()==post.user.email}"
-					class="btn btn-danger btn-sm rounded-0 me-1" href="#"
+					class="btn btn-info text-light btn-sm rounded-0 me-1" href="#"
 					data-bs-toggle="modal" data-bs-target="#exampleModal"
 					onclick="confirmDelete(this)" th:name="'/posts/delete/'+${post.id}">Delete
 				</a>
@@ -128,7 +126,8 @@
 			</div>
 		</div>
 
-		<div th:if="${recommendedPosts.size()>1}" class="mx-auto" style="max-width: 50rem">
+		<div th:if="${recommendedPosts.size()>1}" class="mx-auto"
+			style="max-width: 50rem">
 			<h4>You may also like..</h4>
 			<div class="overflow-auto" style="height: 20rem">
 				<div class="row justify-content-center mx-auto">

@@ -85,9 +85,11 @@ public class PostServiceImpl implements PostService {
 	public List<Post> searchByKeywords(String keyword) {
 		List<Post> titles=postRepository.findByTitleContaining(keyword);
 		List<Post> bodies=postRepository.findByBodyContaining(keyword);
+		List<Post> shortDescs=postRepository.findByShortDescContaining(keyword);
 		Set<Post> uniques=new HashSet<>();
 		titles.forEach(elem->uniques.add(elem));
 		bodies.forEach(elem->uniques.add(elem));
+		shortDescs.forEach(elem->uniques.add(elem));
         List<Post> result = new ArrayList<>();
         for (Post p : uniques)
             result.add(p);

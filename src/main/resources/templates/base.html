@@ -21,15 +21,13 @@
 
 	<!-- Navigation bar -->
 	<div th:fragment="navbar">
-		<div class="navbar navbar-expand-lg navbar-light bg-light p-3 fixed-top">
-			<span class="brand-name d-flex m-0 p-0 me-5"> <img alt=""
+		<div class="navbar navbar-expand-lg py-3 px-4 fixed-top">
+			<span class="brand-name d-flex m-0 p-0 me-2"> <img alt=""
 				src="https://cdn-icons-png.flaticon.com/512/2907/2907086.png"
 				class="me-2" style="width: 3rem; height: 3rem">
-			</span> <span sec:authorize="isAuthenticated()"
-				class="brand-name d-flex ms-2"> <a
-				class="nav-link fw-bold link-secondary"
-				th:href="@{'/posts/profile/email/'+${#authentication.getPrincipal().getUsername()}}"
-				th:text="'⚡'+${#authentication.getPrincipal().getUsername()}"></a>
+			</span> <span class="brand-name d-flex flex-column"> <a class=" text-decoration-none link-info fs-4 fw-bold mb-0">
+					The Travel Blog </a>
+				<a class="fw-light text-decoration-none link-dark ms-1" style="font-size: 10px">Share your travel stories</a>
 			</span>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -39,6 +37,11 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					<li sec:authorize="isAuthenticated()" class="nav-item d-flex"><i
+						class="fa fa-check-circle text-success" style="margin-top: 13px"></i><a
+						th:text="${#authentication.getPrincipal().getUsername()}"
+						class="nav-link"
+						th:href="@{'/posts/profile/email/'+${#authentication.getPrincipal().getUsername()}}"></a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="/#travel-destinations"><i class="fa-solid fa-home"></i>
 							Home</a></li>
